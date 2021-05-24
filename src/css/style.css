@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background:#000;
+    color:#fff;
+}
+p,
+h1,h2,h3,h4,h5,h6 {
+    margin:0;
+}
+a, a:hover, a:active {
+    color:initial;
+    text-decoration: none;
+}
+img {
+    object-fit: cover;
+}
+
+.ul-cleargap {
+    list-style: none;
+    padding:0;
+}
+.inner {
+    max-width: 100%;
+    width:95%;
+    margin:0 auto;
+    position: relative;
+}
