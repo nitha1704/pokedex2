@@ -7,6 +7,7 @@ import { GlobalContext2 } from "../context/context";
 
 // Loading Image
 import spinLoadingImage from "../images/loading-img/Spin-1s-200px.gif";
+import loadingIMG from "../images/loading-img/loading2-small.gif";
 
 const PokemonCard = () => {
   const {
@@ -56,6 +57,7 @@ const PokemonCard = () => {
                 src={pokemonThumbnail}
                 alt={item.name}
                 className="pokemon-thumbnail"
+                placeholderSrc={loadingIMG}
               />
               <h3>
                 No.{index + 1}{" "}
