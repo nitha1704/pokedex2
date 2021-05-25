@@ -75,14 +75,6 @@ const GlobalContext = ({ children }) => {
 
   const fetchFilterData = async (pokemonName) => {
     setState({ loading: true });
-    // const data = await axios
-    //   .get("https://pokeapi.co/api/v2/pokemon?limit=898")
-    //   .then((res) => {
-    //     return res.data.results.filter((item) =>
-    //       item.name.toLowerCase().includes(pokemonName.toLowerCase())
-    //     );
-    //   });
-    // console.log(data);
 
     const data = searchBarData.filter((item) =>
       item.name.toLowerCase().includes(pokemonName.toLowerCase())
@@ -91,12 +83,12 @@ const GlobalContext = ({ children }) => {
 
     setState({
       ...state,
-      //pokemon: data,
+      pokemon: data,
+      pokemonEndPoint: 12,
       loading: false,
     });
   };
 
-  console.log(state.pokemonEndPoint);
   useState(() => {
     fetchData();
   }, []);

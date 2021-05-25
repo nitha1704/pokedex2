@@ -12,7 +12,8 @@ import spinLoadingImage from "../images/loading-img/spin32x32.gif";
 import { GlobalContext2 } from "../context/context";
 
 const SearchBar = () => {
-  const { pokemonSearchData, fetchFilterData } = GlobalContext2();
+  const { pokemonSearchData, fetchFilterData } =
+    GlobalContext2();
   const [pokemonName, setPokemonName] = useState("");
   const [showSearchInformation, setShowSearchInformation] = useState(false);
 
@@ -57,7 +58,7 @@ const SearchBar = () => {
               : setShowSearchInformation(false)
           }
         />
-        <button onClick={() => fetchFilterData(pokemonName)}>Search</button>
+        <button onClick={() => {fetchFilterData(pokemonName);setShowSearchInformation(false)}}>Search</button>
       </div>
 
       {showSearchInformation && (

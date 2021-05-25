@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import {Link} from 'react-router-dom';
+import { animateScroll } from "react-scroll";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 // Context
@@ -18,51 +20,61 @@ const PokemonCard = () => {
     fetchDataNextRow,
   } = GlobalContext2();
 
+  const [pokemonCardLength, setPokemonCardLength] = useState(0);
+
   const scrollToNewItem = () => {
     let pokemonCardElem = document.querySelector(
       ".pokemon-card-container"
     ).children;
-    let elem = pokemonCardElem[pokemonCardElem.length - 12];
+    let elem = pokemonCardElem[pokemonCardElem.length - 1];
     let elemTop = elem.offsetTop;
     let elemBottom = elemTop + elem.offsetHeight;
 
-    setTimeout(() => {
-      window.scroll({
-        top: elemTop + 100,
-        left: 0,
-        behavior: "smooth",
-      });
-    }, 300);
+    // setTimeout(() => {
+    //   window.scroll({
+    //     top: elemBottom + 100,
+    //     left: 0,
+    //     behavior: "smooth",
+    //   });
+    // }, 300);
+    animateScroll.scrollTo(elemBottom + 100, {
+      duration: 700,
+      delay: 300,
+    });
   };
+
+  useEffect(() => {
+    let pokemonCardElem = document.querySelector(
+      ".pokemon-card-container"
+    ).children;
+    setPokemonCardLength(pokemonCardElem.length);
+  });
 
   return (
     <WrapPokemonCard className="wrap-pokemon-card">
       <div className="pokemon-card-container">
         {pokemon.slice(0, pokemonEndPoint).map((item, index) => {
-          const pokemonThumbnail =
-            index + 1 < 10
-              ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/00${
-                  index + 1
-                }.png`
-              : index + 1 < 100
-              ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/0${
-                  index + 1
-                }.png`
-              : `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${
-                  index + 1
-                }.png`;
+          const { id, name } = item;
+          const pokemonImage =
+            id < 10
+              ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/00${id}.png`
+              : id < 100
+              ? `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/0${id}.png`
+              : `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${id}.png`;
+
           return (
             <div className="pokemon-card">
-              <LazyLoadImage
-                src={pokemonThumbnail}
-                alt={item.name}
-                className="pokemon-thumbnail"
-                placeholderSrc={loadingIMG}
-              />
-              <h3>
-                No.{index + 1}{" "}
-                {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-              </h3>
+              <Link to={`pokemon/${id}`}>
+                <LazyLoadImage
+                  src={pokemonImage}
+                  alt={name}
+                  className="pokemon-thumbnail"
+                  placeholderSrc={loadingIMG}
+                />
+                <h3>
+                  No.{id} {name.charAt(0).toUpperCase() + name.slice(1)}
+                </h3>
+              </Link>
             </div>
           );
         })}
@@ -70,7 +82,7 @@ const PokemonCard = () => {
       <div className="wrap-loading-more-btn">
         {loadingNextRow ? (
           <img src={spinLoadingImage} />
-        ) : pokemonNextRow ? (
+        ) : pokemon.length > pokemonCardLength ? (
           <button
             className="loading-more"
             onClick={() => fetchDataNextRow(scrollToNewItem)}
