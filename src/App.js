@@ -6,6 +6,7 @@ import "./css/style.css";
 import Home from "./pages/Home";
 // Component
 import PokemonInfo from "./components/PokemonInfo";
+import PokemonInfo2 from "./components/PokemonInfo2";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/pokemon/:id" component={PokemonInfo} />
+          <Route exact path="/pokemon/:id" component={PokemonInfo2} />
         </Switch>
       </div>
     </BrowserRouter>

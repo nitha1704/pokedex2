@@ -3,7 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
+import pokemonData from "../data/pokemonData";
+
 const PokemonInfo = () => {
+  
   const { id: pokemonID } = useParams();
 
   const [loading2, setLoading2] = useState(false);
@@ -39,19 +42,78 @@ const PokemonInfo = () => {
       ? `https://assets.pokemon.com/assets/cms2/img/pokedex/full/0${info1.id}.png`
       : `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${info1.id}.png`;
 
+
+
   const fetchInfoData = async () => {
     setLoading2(true);
-    const allInfo = await Promise.all([axios.get(url1), axios.get(url2)]).then(
-      (res) => res
-    );
-    let { id, name, abilities, height, weight, stats, types } = allInfo[0].data;
+
+    // const pokemonIndexNumber = [];
+    // for (var i = 1; i <= 898; i++) {
+    //   pokemonIndexNumber.push(i);
+    // }
+    // const allInfo = pokemonIndexNumber.map(async (item, index) => {
+    //   return Promise.all([
+    //     await axios.get(`https://pokeapi.co/api/v2/pokemon/${item}/`),
+    //     await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${item}/`),
+    //   ])
+    //     .then((res) => res)
+    //     .then((res2) =>
+    //       res2.map((item) => {
+    //         return item.data;
+    //       })
+    //     );
+    // });
+    // const allInfo2 = await Promise.all(allInfo).then((res) => res);
+    // const allInfo3 = allInfo2.map((item) => {
+    //   return { ...item[0], ...item[1] };
+    // });
+    // const allInfo4 = allInfo3.map(
+    //   ({ id, name, abilities, height, weight, stats, types,
+    //       capture_rate,
+    //   egg_groups,
+    //   flavor_text_entries,
+    //   hatch_counter,
+    //   gender_rate, }) => {
+    //     return {
+    //       id,
+    //       name,
+    //       abilities,
+    //       height,
+    //       weight,
+    //       stats,
+    //       types,
+    //       capture_rate,
+    //       egg_groups,
+    //       flavor_text_entries: flavor_text_entries.filter((item) => {
+    //           if(item.language.name === "en") {
+    //               return item
+    //           }          
+    //       }).map((item, index, array)=>{
+    //           if (index === array.length - 1) {
+    //             return item.flavor_text;
+    //           }     
+    //       }).filter(item => {
+    //           if(item !== undefined) {
+    //               return item
+    //           }
+    //       }),
+    //       hatch_counter,
+    //       gender_rate,
+    //     };
+    //   }
+    // );
+    // console.log(allInfo4);
+
+
+    let { id, name, abilities, height, weight, stats, types } =
+      pokemonData[pokemonID - 1];
     let {
       capture_rate,
       egg_groups,
       flavor_text_entries,
       hatch_counter,
       gender_rate,
-    } = allInfo[1].data;
+    } = pokemonData[pokemonID - 1];
 
     // Status
     const status = stats.reduce((acc, item) => {
@@ -78,7 +140,7 @@ const PokemonInfo = () => {
     setInfo2({
       capture_rate: Math.round((100 / 255) * capture_rate),
       egg_groups: egg_groups,
-      description: flavor_text_entries.filter(item => item.language.name === 'en'),
+      description: flavor_text_entries[0],
       hatch_counter: (hatch_counter + 1) * 255,
       gender_rate: {
         originalRate: gender_rate,
@@ -87,8 +149,6 @@ const PokemonInfo = () => {
       },
     });
 
-    //console.log(flavor_text_entries);
-
     setLoading2(false);
   };
 
@@ -96,11 +156,9 @@ const PokemonInfo = () => {
     fetchInfoData();
   }, [pokemonID]);
 
-  console.log(info2.description[info2.description.length - 1]);
-
   return (
     <PokemonInformation className="pokemon-information">
-      <h1>PokemonInfo</h1>
+      <h1>PokemonInfo2</h1>
       {loading2 ? (
         <h1>Loading ...</h1>
       ) : (
@@ -205,7 +263,7 @@ const PokemonInformation = styled.div`
   }
   .wrap-information {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     row-gap: 50px;
   }
   .ability-name,
